@@ -9,35 +9,30 @@ import ListBooks from './ListBooks'
 class BooksApp extends React.Component {
   state = {
     books:[]
-    ,booksByShelf:{}
     ,shelfNames:{
       currentlyReading:'Currently Reading',
       wantToRead:'Want To Reading',
-      read:'Read'
+      read:'Read',
+      none:'None'
     }
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      let booksByShelf = this.groupBookByCategory(books)
       this.setState({books})
-      this.setState({booksByShelf})
     })
   }
 
-  groupBookByCategory = (books) => {
-    let booksByShelf = {}
-    books.forEach((book) => {
-      let bookShelf = book.shelf
-      if(Object.keys(booksByShelf).includes(bookShelf)){
-        booksByShelf[bookShelf].push(book)
-      } else {
-        booksByShelf[bookShelf] = [book]
-      }
-    })
-    return booksByShelf
-  }
+  updateShelf = (book, shelf) => {
+    book.shelf = shelf
+    let books = this.state.books.filter((c) => c.id !== book.id)
+    books.push(book)
+    this.setState((state) => ({
+      books:books
+    }))
 
+    BooksAPI.update(book, shelf)
+  }
 
   render() {
     return (
@@ -50,8 +45,8 @@ class BooksApp extends React.Component {
           <div className="list-books">
             <ListBooks
               books={this.state.books}
-              booksByShelf={this.state.booksByShelf}
               shelfNames={this.state.shelfNames}
+              onUpdateShelf={this.updateShelf}
               >
             </ListBooks>
               <div className="open-search">

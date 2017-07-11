@@ -1,11 +1,34 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types';
+
 
 class ListBooks extends Component{
 
+  static propTyes = {
+    books: PropTypes.array.isRequired,
+    onUpdateShelf: PropTypes.func.isRequired
+  }
+
+  groupBookByCategory = (books) => {
+    let booksByShelf = {}
+    
+    books.forEach((book) => {
+      let bookShelf = book.shelf
+      if(Object.keys(booksByShelf).includes(bookShelf)){
+        booksByShelf[bookShelf].push(book)
+      } else {
+        booksByShelf[bookShelf] = [book]
+      }
+    })
+    return booksByShelf
+  }
+
   render() {
-    const { books, booksByShelf, shelfNames} = this.props
+    const { books, shelfNames, onUpdateShelf} = this.props
+
+    let booksByShelf = this.groupBookByCategory(books)
     let bookShelds = Object.keys(booksByShelf)
-    console.log(books)
+
     return (
       <div>
         <div className="list-books-title">
@@ -24,7 +47,9 @@ class ListBooks extends Component{
                           <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer">
-                              <select>
+                              <select
+                                value={book.shelf}
+                                onChange={(event) => onUpdateShelf(book, event.target.value)}>
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
