@@ -8,20 +8,23 @@ import ListBooks from './ListBooks'
 
 class BooksApp extends React.Component {
   state = {
-    books:[]
-    ,shelfNames:{
+    books:[],
+    shelfNames:{
       currentlyReading:'Currently Reading',
       wantToRead:'Want To Reading',
       read:'Read',
       none:'None'
-    }
+    },
+    showingBooks: []
   }
+
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({books})
     })
   }
+
 
   updateShelf = (book, shelf) => {
     book.shelf = shelf
@@ -38,22 +41,27 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route path="/search" render={() => (
-            <SearchBooks></SearchBooks>
+            <SearchBooks
+              onUpdateShelf={this.updateShelf}
+              addedBooks={this.state.books}>
+            </SearchBooks>
         )}/>
 
-      <Route exact path="/" render={({history}) => (
-          <div className="list-books">
-            <ListBooks
-              books={this.state.books}
-              shelfNames={this.state.shelfNames}
-              onUpdateShelf={this.updateShelf}
-              >
-            </ListBooks>
-              <div className="open-search">
-                <Link to="/search">Add a book</Link>
-              </div>
-          </div>
-        )}/>
+        <Route exact path="/" render={({history}) => (
+            <div className="list-books">
+              <ListBooks
+                books={this.state.books}
+                shelfNames={this.state.shelfNames}
+                onUpdateShelf={this.updateShelf}
+                >
+              </ListBooks>
+                <div className="open-search">
+                  <Link to="/search">
+                    Add a book
+                  </Link>
+                </div>
+            </div>
+          )}/>
       </div>
     )
   }
