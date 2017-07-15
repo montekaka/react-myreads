@@ -13,7 +13,7 @@ class BooksApp extends React.Component {
       currentlyReading:'Currently Reading',
       wantToRead:'Want To Reading',
       read:'Read',
-      none:'None'
+      //none:'None'
     },
     showingBooks: []
   }

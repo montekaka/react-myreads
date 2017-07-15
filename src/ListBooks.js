@@ -10,25 +10,22 @@ class ListBooks extends Component{
     onUpdateShelf: PropTypes.func.isRequired
   }
 
-  groupBookByCategory = (books) => {
+  groupBookByCategory = (books, shelfName) => {
+    let categories = Object.keys(shelfName)
     let booksByShelf = {}
 
-    books.forEach((book) => {
-      let bookShelf = book.shelf
-      if(Object.keys(booksByShelf).includes(bookShelf)){
-        booksByShelf[bookShelf].push(book)
-      } else {
-        booksByShelf[bookShelf] = [book]
-      }
+    categories.forEach((category) => {
+      booksByShelf[category] = books.filter((b) => b.shelf === category)
     })
+
     return booksByShelf
   }
 
   render() {
     const { books, shelfNames, onUpdateShelf} = this.props
 
-    let booksByShelf = this.groupBookByCategory(books)
-    let bookShelds = Object.keys(booksByShelf)
+    let booksByShelf = this.groupBookByCategory(books, shelfNames)
+    let bookShelds = Object.keys(shelfNames)
     bookShelds.sort()
 
     return (
