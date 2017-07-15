@@ -9,12 +9,6 @@ import ListBooks from './ListBooks'
 class BooksApp extends React.Component {
   state = {
     books:[],
-    shelfNames:{
-      currentlyReading:'Currently Reading',
-      wantToRead:'Want To Reading',
-      read:'Read',
-      //none:'None'
-    },
     showingBooks: []
   }
 
@@ -38,6 +32,14 @@ class BooksApp extends React.Component {
   }
 
   render() {
+    let shelfNames = {
+      currentlyReading:'Currently Reading',
+      wantToRead:'Want To Reading',
+      read:'Read',
+      //none:'None'
+    }
+
+
     return (
       <div className="app">
         <Route path="/search" render={() => (
@@ -51,10 +53,9 @@ class BooksApp extends React.Component {
             <div className="list-books">
               <ListBooks
                 books={this.state.books}
-                shelfNames={this.state.shelfNames}
+                shelfNames={shelfNames}
                 onUpdateShelf={this.updateShelf}
-                >
-              </ListBooks>
+                />
                 <div className="open-search">
                   <Link to="/search">
                     Add a book

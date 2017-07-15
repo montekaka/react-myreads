@@ -71,7 +71,7 @@ class SearchBooks extends Component{
                   key={idx}
                   book={this.setupBook(book)}
                   onUpdateShelf={onUpdateShelf}
-                  ></ListBook>
+                  />
               ))}
             </ol>
           </div>

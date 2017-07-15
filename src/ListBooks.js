@@ -45,7 +45,7 @@ class ListBooks extends Component{
                         key={book.id}
                         book={book}
                         onUpdateShelf={onUpdateShelf}
-                        ></ListBook>
+                        />
                     ))}
                   </ol>
                 </div>
